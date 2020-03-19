@@ -17,14 +17,14 @@ class Draw_canvas {
   // draw connected scatter plots
   // position and size are array of [x,y]
   // data is array of coordinates [[x,y]] in temporal order
-  connectedScatterPlot(position,size,data,strokeColor,fillColor) {
+  connectedScatterPlot(position,size,data,strokeColor,id) {
     // draw rectangle
     this.ctx.strokeStyle = `rgb(${strokeColor[0]},${strokeColor[1]},${strokeColor[2]})`;
-    // this.ctx.fillStyle = `rgb(${fillColor[0]},${fillColor[1]},${fillColor[2]})`;
     this.ctx.strokeRect(position[0],position[1],size[0],size[1]);
-    // this.ctx.fillRect(position[0],position[1],size[0],size[1]);
     this.ctx.stroke();
-    // this.ctx.fill();
+    // draw text
+    this.ctx.font = '12px Arial';
+    this.ctx.fillText('Circular score = '+Math.floor(experiment.loop[id][0][1][0][2]*100)/100,position[0],position[1]);
     // draw data points and lines
     let nTimeStep = data.length;
     for (let step = 0; step < nTimeStep; step++) {

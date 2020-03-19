@@ -12,6 +12,10 @@ function main() {
     experiment.data[i].push(experiment.data[i][0]);
   }
 
+  // score
+  let featureClass = new Visual_feature_2D();
+  featureClass.Loop();
+
   // draw
   d3.select('body').append('div').attr('id','canvasParent');
   let width = experiment.plotSize[0]*10+experiment.blankSize[0]*11;
@@ -24,7 +28,7 @@ function main() {
       position[1] = col*(experiment.plotSize[1]+experiment.blankSize[1])+experiment.blankSize[1];
       let strokeColor = [0,0,0];
       let fillColor = [255,255,255];
-      drawClass.connectedScatterPlot(position,experiment.plotSize,experiment.data[row*10+col],strokeColor,fillColor);
+      drawClass.connectedScatterPlot(position,experiment.plotSize,experiment.data[row*10+col],strokeColor,row*10+col);
     }
   }
 }
