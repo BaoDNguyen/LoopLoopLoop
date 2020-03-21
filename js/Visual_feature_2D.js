@@ -9,7 +9,7 @@ class Visual_feature_2D {
   // compute loop
   Loop () {
     let n_timePoint = 100;
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < experiment.row*experiment.col; i++) {
       experiment.loop[i] = [];
                 let loopLength = [];
                 let loopNum = 0;
