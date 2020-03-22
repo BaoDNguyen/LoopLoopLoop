@@ -35,15 +35,32 @@ function main() {
     }
   }
 
-  // get bin
-
+  // write bin
+  for (let i = 0; i < experiment.row*experiment.col; i++) {
+    experiment.bin[i] = [];
+    for (let row = 0; row < experiment.nBin; row++) {
+      experiment.bin[i][row] = [];
+      for (let col = 0; col < experiment.nBin; col++) {
+        experiment.bin[i][row][col] = [0];
+      }
+    }
+    experiment.data[i].forEach((element,index)=>{
+      if (index) {
+        let myBin = write_bin(experiment.data[i][index-1][0],experiment.data[i][index-1][1],element[0],element[1]);
+        for (let row = 0; row < experiment.nBin; row++) {
+          for (let col = 0; col < experiment.nBin; col++) {
+            if (myBin[row][col] !== 0) experiment.bin[i][row][col] = [1];
+          }
+        }
+      }
+    });
+  }
 
   // prepare data for export
   let X_train = experiment.bin.filter((element,index)=>index < 1750);
   let X_test = experiment.bin.filter((element,index)=>index>=1750);
   let y_train = experiment.score.filter((element,index)=>index<1750);
   let y_test = experiment.score.filter((element,index)=>index>=1750);
-  console.log(y_train);
 
   // write file
   let writeClass = new Write_file();
@@ -70,5 +87,29 @@ function write_bin(x0,y0,x1,y1) {
   let col1 = Math.floor(y1/binSize);
   result[row0][col0] = 1;
   result[row1][col1] = 1;
-  ytr
+
+  let lowerRow = Math.min(...[row0,row1]);
+  let upperRow = Math.max(...[row0,row1]);
+  let lowerCol = Math.min(...[col0,col1]);
+  let upperCol = Math.max(...[col0,col1]);
+
+  let lineParameters = Geometry.line_equation(x0,y0,x1,y1);
+  for (let row = lowerRow; row <= upperRow; row++) {
+    for (let col = lowerCol; col <= upperCol; col++) {
+      let firstPoint = [row*binSize,col*binSize];
+      let secondPoint = [row*binSize+binSize,col*binSize];
+      let thirdPoint = [row*binSize+binSize,col*binSize+binSize];
+      let fourthPoint = [row*binSize,col*binSize+binSize];
+      let firstDiagonal = Geometry.line_equation(firstPoint[0],firstPoint[1],thirdPoint[0],thirdPoint[1]);
+      let secondDiagonal = Geometry.line_equation(secondPoint[0],secondPoint[1],fourthPoint[0],fourthPoint[1]);
+      let firstIntersection = Geometry.intersection_point(lineParameters[0],lineParameters[1],firstDiagonal[0],firstDiagonal[1]);
+      let secondIntersection = Geometry.intersection_point(lineParameters[0],lineParameters[1],secondDiagonal[0],secondDiagonal[1]);
+      let check1 = firstIntersection[0] >= row*binSize && firstIntersection[0] <=row*binSize+binSize && firstIntersection[1] >= col*binSize && firstIntersection[1] <= col*binSize+binSize;
+      let check2 = secondIntersection[0] >= row*binSize && secondIntersection[0] <= row*binSize+binSize && secondIntersection[1] >= col*binSize && secondIntersection[1] <= col*binSize+binSize;
+      let check = check1 || check2;
+      if (check) result[row][col] = 1;
+      else result[row][col] = 0;
+    }
+  }
+  return result;
 }
