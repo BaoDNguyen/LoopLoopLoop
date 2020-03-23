@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07817646-99ab-403c-b2ae-ae3d1aafe6aa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/js/myGeometry.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/Global_variable.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/Global_variable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/Visual_feature_2D.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/Visual_feature_2D.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/main.js" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,18 +45,6 @@
       <recent name="$PROJECT_DIR$/Lib" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
   <component name="RunManager">
     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/LoopLoopLoop/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
@@ -67,6 +54,18 @@
         <item itemvalue="JavaScript Debug.index.html" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -86,6 +85,7 @@
       <workItem from="1584720631043" duration="72000" />
       <workItem from="1584720722339" duration="11199000" />
       <workItem from="1584820593398" duration="5038000" />
+      <workItem from="1584969626772" duration="3473000" />
     </task>
     <servers />
   </component>
@@ -104,5 +104,11 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="443" y="120" width="659" height="518" key="find.popup" timestamp="1584970654578">
+      <screen x="0" y="23" width="1280" height="777" />
+    </state>
+    <state x="443" y="120" width="659" height="518" key="find.popup/0.23.1280.777@0.23.1280.777" timestamp="1584970654578" />
   </component>
 </project>

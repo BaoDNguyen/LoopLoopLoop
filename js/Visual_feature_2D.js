@@ -1,7 +1,7 @@
 class Visual_feature_2D {
-  constructor () {
+  constructor (data) {
     // this.smooth = smooth;
-
+    this.data = data;
     experiment.loop = [];
     experiment.highLoop = [];
   }
@@ -14,18 +14,18 @@ class Visual_feature_2D {
                 let loopLength = [];
                 let loopNum = 0;
                 for (let t = 0; t < n_timePoint - 3; t++) {
-                  let x1 = experiment.data[i][t][0], y1 = experiment.data[i][t][1];
-                  let x2 = experiment.data[i][t+1][0], y2 = experiment.data[i][t+1][1];
+                  let x1 = this.data[i][t][0], y1 = this.data[i][t][1];
+                  let x2 = this.data[i][t+1][0], y2 = this.data[i][t+1][1];
                   if (x1 !== Infinity && y1 !== Infinity && x2 !== Infinity && y2 !== Infinity) {
                     for (let tt = t+2; tt < n_timePoint - 1; tt++) {
-                      let x3 = experiment.data[i][tt][0], y3 = experiment.data[i][tt][1];
-                      let x4 = experiment.data[i][tt+1][0], y4 = experiment.data[i][tt+1][1];
+                      let x3 = this.data[i][tt][0], y3 = this.data[i][tt][1];
+                      let x4 = this.data[i][tt+1][0], y4 = this.data[i][tt+1][1];
                       if (x3 !== Infinity && y3 !== Infinity && x4 !== Infinity && y4 !== Infinity) {
                         if ( Visual_feature_2D.checkIntersection(x1,y1,x2,y2,x3,y3,x4,y4)) {
                           if (tt-t>=experiment.offset) {
                             let sites = [];
                             for (let j = t; j <= tt; j++) {
-                              sites[j-t] = [experiment.data[i][j][0],experiment.data[i][j][1]];
+                              sites[j-t] = [this.data[i][j][0],this.data[i][j][1]];
                             }
                             let inLoop = Visual_feature_2D.checkSmallLoop(sites);
                             let my_area = Visual_feature_2D.area(sites);

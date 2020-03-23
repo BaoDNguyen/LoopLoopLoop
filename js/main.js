@@ -1,40 +1,112 @@
-main();
-function main() {
-  // generate data
-  let dataClass = new Generate_data();
-  let listRadius = dataClass.randomListNumber(experiment.lowerRadius,experiment.upperRadius,experiment.row*experiment.col);
-  let listCenter = [];
-  for (let i = 0; i < experiment.row*experiment.col; i++) {
-    let xCenter = dataClass.randomListNumber(listRadius[i],1-listRadius[i],1);
-    let yCenter = dataClass.randomListNumber(listRadius[i],1-listRadius[i],1);
-    listCenter[i] = [xCenter[0],yCenter[0]];
-    experiment.data[i] = dataClass.uniformCircle(listCenter[i],listRadius[i],99);
-    experiment.data[i].push(experiment.data[i][0]);
+Promise.all([
+  d3.csv("data/birth_death_rate.csv"),
+  d3.tsv("data/death_rate_code.txt"),
+  d3.tsv("data/death_rate_var.txt"),
+]).then(function (file) {
+  experiment.timeInfo = file[0].columns.filter((element,index)=>index!==0);
+  experiment.instanceInfo = file[1].map(element=>element.name);
+  experiment.variableInfo = file[2].map(element=>element.name);
+  let n_timeSeries = file[0].length;
+  let n_timePoint = file[0].columns.length-1;
+  let n_instances = file[1].length;
+  let n_variable = file[2].length;
+  let mapSeries = [];
+  for (let i = 0; i < n_timeSeries; i++) {
+    let sampleCode = file[0][i]['CountryCode'];
+    let variableCode = file[0][i]['Type'];
+    if (file[2].findIndex(element=>element.code===variableCode)!==-1) mapSeries.push([sampleCode,variableCode,i]);
+  }
+  for (let i = 0; i < n_instances; i++) {
+    experiment.realData[file[1][i].name] = {};
+    for (let j = 0; j < n_variable; j++) {
+      let sampleCode = file[1][i].code;
+      let variableCode = file[2][j].code;
+      let variable = file[2][j].name;
+      let rowMatrix = mapSeries.find(element=>element[0]===sampleCode&&element[1]===variableCode);
+      if (rowMatrix) {
+        let row = rowMatrix[2];
+        let timeSeries = [];
+        for (let t = 0; t < n_timePoint; t++) {
+          timeSeries[t] = isNaN(parseFloat(file[0][row][experiment.timeInfo[t]])) ? Infinity : parseFloat(file[0][row][experiment.timeInfo[t]]);
+        }
+        let maxValue = Math.max(...timeSeries.filter(element=>element!==Infinity));
+        let minValue = Math.min(...timeSeries.filter(element=>element!==Infinity));
+        let rangeValue = maxValue - minValue;
+        experiment.realData[file[1][i].name][file[2][j].name] = timeSeries.map(element=>{
+          if (maxValue !== Infinity && minValue !== Infinity) return (element-minValue)/rangeValue;
+          else return Infinity;
+        });
+      }
+    }
   }
 
-  // score
-  let featureClass = new Visual_feature_2D();
+  main();
+  let myData = [];
+  for (let sample in experiment.realData) {
+    let sampleCode = file[1].find(element=>element.name === sample).code;
+    myData[sampleCode] = [];
+    let count  = 0;
+    for (let variable in experiment.realData[sample]) {
+      myData[sampleCode][count] = experiment.realData[sample][variable].map(element=>element);
+      count += 1;
+    }
+  }
+  for (let i = 0; i < myData.length; i++) {
+    for (let j = 0; j < myData[i].length-1; j++) {
+      for (let k = j+1; k < myData[i].length; k++) {
+        let arr = myData[i][j].map((element,index)=>[element,myData[i][k][index]]);
+        experiment.data.push(arr);
+      }
+    }
+  }
+  let featureClass = new Visual_feature_2D(experiment.data);
   featureClass.Loop();
   for (let i = 0; i < experiment.row*experiment.col; i++) {
     experiment.score[i] = [Math.floor(experiment.loop[i][0][1][0][2]*100)/100];
     if (experiment.score[i][0] > 1) experiment.score[i][0] = 1;
   }
+  Bao();
+
+
+});
+
+function main() {
+  // generate data
+  let dataClass = new Generate_data();
+  let listRadius = dataClass.randomListNumber(experiment.lowerRadius, experiment.upperRadius, experiment.row * experiment.col);
+  let listCenter = [];
+  for (let i = 0; i < experiment.row * experiment.col; i++) {
+    let xCenter = dataClass.randomListNumber(listRadius[i], 1 - listRadius[i], 1);
+    let yCenter = dataClass.randomListNumber(listRadius[i], 1 - listRadius[i], 1);
+    listCenter[i] = [xCenter[0], yCenter[0]];
+    experiment.data[i] = dataClass.uniformCircle(listCenter[i], listRadius[i], 99);
+    experiment.data[i].push(experiment.data[i][0]);
+  }
+}
+  // score
+  // let featureClass = new Visual_feature_2D(experiment.data);
+  // featureClass.Loop();
+  // for (let i = 0; i < experiment.row*experiment.col; i++) {
+  //   experiment.score[i] = [Math.floor(experiment.loop[i][0][1][0][2]*100)/100];
+  //   if (experiment.score[i][0] > 1) experiment.score[i][0] = 1;
+  // }
 
   // draw
-  d3.select('body').append('div').attr('id','canvasParent');
-  let width = experiment.plotSize[0]*experiment.col+experiment.blankSize[0]*(experiment.col+1);
-  let height = experiment.plotSize[1]*experiment.row+experiment.blankSize[1]*(experiment.row+1);
-  let drawClass = new Draw_canvas('canvasParent','myCanvas',width,height);
-  for (let row = 0; row < experiment.row; row++) {
-    for (let col = 0; col < experiment.col; col++) {
-      let position = [];
-      position[0] = row*(experiment.plotSize[0]+experiment.blankSize[0])+experiment.blankSize[0];
-      position[1] = col*(experiment.plotSize[1]+experiment.blankSize[1])+experiment.blankSize[1];
-      let strokeColor = [0,0,0];
-      drawClass.connectedScatterPlot(position,experiment.plotSize,experiment.data[row*experiment.col+col],strokeColor,row*experiment.col+col);
-    }
-  }
+  // d3.select('body').append('div').attr('id','canvasParent');
+  // let width = experiment.plotSize[0]*experiment.col+experiment.blankSize[0]*(experiment.col+1);
+  // let height = experiment.plotSize[1]*experiment.row+experiment.blankSize[1]*(experiment.row+1);
+  // let drawClass = new Draw_canvas('canvasParent','myCanvas',width,height);
+  // for (let row = 0; row < experiment.row; row++) {
+  //   for (let col = 0; col < experiment.col; col++) {
+  //     let position = [];
+  //     position[0] = row*(experiment.plotSize[0]+experiment.blankSize[0])+experiment.blankSize[0];
+  //     position[1] = col*(experiment.plotSize[1]+experiment.blankSize[1])+experiment.blankSize[1];
+  //     let strokeColor = [0,0,0];
+  //     drawClass.connectedScatterPlot(position,experiment.plotSize,experiment.data[row*experiment.col+col],strokeColor,row*experiment.col+col);
+  //   }
+  // }
 
+function Bao() {
   // write bin
   for (let i = 0; i < experiment.row*experiment.col; i++) {
     experiment.bin[i] = [];
@@ -69,6 +141,7 @@ function main() {
   writeClass.onSaveDescription(y_train,'y_train.json','json');
   writeClass.onSaveDescription(y_test,'y_test.json','json');
 }
+
 
 // write bin
 function write_bin(x0,y0,x1,y1) {

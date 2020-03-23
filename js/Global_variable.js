@@ -11,7 +11,11 @@ experiment = {
   highLoop: [],
   score: [],
   bin: [],
-  row: 50,
-  col: 50,
+  row: 10,
+  col: 10,
   nBin: 40,
+  timeInfo: [],
+  instanceInfo: [],
+  variableInfo: [],
+  realData: {},
 };
