@@ -43,7 +43,7 @@ Promise.all([
   main();
   let myData = [];
   for (let sample in experiment.realData) {
-    let sampleCode = file[1].find(element=>element.name === sample).code;
+    let sampleCode = file[1].findIndex(element=>element.name === sample);
     myData[sampleCode] = [];
     let count  = 0;
     for (let variable in experiment.realData[sample]) {
@@ -59,12 +59,7 @@ Promise.all([
       }
     }
   }
-  let featureClass = new Visual_feature_2D(experiment.data);
-  featureClass.Loop();
-  for (let i = 0; i < experiment.row*experiment.col; i++) {
-    experiment.score[i] = [Math.floor(experiment.loop[i][0][1][0][2]*100)/100];
-    if (experiment.score[i][0] > 1) experiment.score[i][0] = 1;
-  }
+
   Bao();
 
 
@@ -83,13 +78,6 @@ function main() {
     experiment.data[i].push(experiment.data[i][0]);
   }
 }
-  // score
-  // let featureClass = new Visual_feature_2D(experiment.data);
-  // featureClass.Loop();
-  // for (let i = 0; i < experiment.row*experiment.col; i++) {
-  //   experiment.score[i] = [Math.floor(experiment.loop[i][0][1][0][2]*100)/100];
-  //   if (experiment.score[i][0] > 1) experiment.score[i][0] = 1;
-  // }
 
   // draw
   // d3.select('body').append('div').attr('id','canvasParent');
@@ -107,8 +95,15 @@ function main() {
   // }
 
 function Bao() {
+  let featureClass = new Visual_feature_2D(experiment.data);
+  featureClass.Loop();
+  for (let i = 0; i < experiment.data.length; i++) {
+    experiment.score[i] = (experiment.loop[i][0][1].length > 0) ? [Math.floor(experiment.loop[i][0][1][0][2]*100)/100] : [0];
+    if (experiment.score[i][0] > 1) experiment.score[i][0] = 1;
+  }
+
   // write bin
-  for (let i = 0; i < experiment.row*experiment.col; i++) {
+  for (let i = 0; i < experiment.data.length; i++) {
     experiment.bin[i] = [];
     for (let row = 0; row < experiment.nBin; row++) {
       experiment.bin[i][row] = [];
@@ -117,7 +112,7 @@ function Bao() {
       }
     }
     experiment.data[i].forEach((element,index)=>{
-      if (index) {
+      if (index && element[0] !== Infinity && element[1] !== Infinity && experiment.data[i][index-1][0] !== Infinity && experiment.data[i][index-1][1] !== Infinity) {
         let myBin = write_bin(experiment.data[i][index-1][0],experiment.data[i][index-1][1],element[0],element[1]);
         for (let row = 0; row < experiment.nBin; row++) {
           for (let col = 0; col < experiment.nBin; col++) {
@@ -129,10 +124,10 @@ function Bao() {
   }
 
   // prepare data for export
-  let X_train = experiment.bin.filter((element,index)=>index < 1750);
-  let X_test = experiment.bin.filter((element,index)=>index>=1750);
-  let y_train = experiment.score.filter((element,index)=>index<1750);
-  let y_test = experiment.score.filter((element,index)=>index>=1750);
+  let X_train = experiment.bin.filter((element,index)=>index < experiment.data.length*0.7);
+  let X_test = experiment.bin.filter((element,index)=>index>=experiment.data.length*0.7);
+  let y_train = experiment.score.filter((element,index)=>index<experiment.data.length*0.7);
+  let y_test = experiment.score.filter((element,index)=>index>=experiment.data.length*0.7);
 
   // write file
   let writeClass = new Write_file();
@@ -158,6 +153,10 @@ function write_bin(x0,y0,x1,y1) {
   let col0 = Math.floor(y0/binSize);
   let row1 = Math.floor(x1/binSize);
   let col1 = Math.floor(y1/binSize);
+  row0 = (row0 === 40) ? 39 : row0;
+  col0 = (col0 === 40) ? 39 : col0;
+  row1 = (row1 === 40) ? 39 : row1;
+  col1 = (col1 === 40) ? 39 : col1;
   result[row0][col0] = 1;
   result[row1][col1] = 1;
 

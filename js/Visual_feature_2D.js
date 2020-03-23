@@ -8,11 +8,11 @@ class Visual_feature_2D {
 
   // compute loop
   Loop () {
-    let n_timePoint = 100;
-    for (let i = 0; i < experiment.row*experiment.col; i++) {
+    for (let i = 0; i < this.data.length; i++) {
       experiment.loop[i] = [];
                 let loopLength = [];
                 let loopNum = 0;
+                let n_timePoint = this.data[i].length;
                 for (let t = 0; t < n_timePoint - 3; t++) {
                   let x1 = this.data[i][t][0], y1 = this.data[i][t][1];
                   let x2 = this.data[i][t+1][0], y2 = this.data[i][t+1][1];
