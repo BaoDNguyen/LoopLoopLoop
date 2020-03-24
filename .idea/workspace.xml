@@ -3,13 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="07817646-99ab-403c-b2ae-ae3d1aafe6aa" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/myTestData6/X_test.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/myTestData6/X_test.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/myTestData6/X_train.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/myTestData6/X_train.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/myTestData6/y_test.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/myTestData6/y_test.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/myTestData6/y_train.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/myTestData6/y_train.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/Visual_feature_2D.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/Visual_feature_2D.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/main.js" afterDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,6 +43,18 @@
       <recent name="$PROJECT_DIR$/Lib" />
     </key>
   </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
   <component name="RunManager">
     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/LoopLoopLoop/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
@@ -57,18 +64,6 @@
         <item itemvalue="JavaScript Debug.index.html" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -90,6 +85,8 @@
       <workItem from="1584820593398" duration="5038000" />
       <workItem from="1584969626772" duration="3497000" />
       <workItem from="1584973480841" duration="2659000" />
+      <workItem from="1584991416467" duration="103000" />
+      <workItem from="1584997291457" duration="1087000" />
     </task>
     <servers />
   </component>
