@@ -218,7 +218,11 @@ function main() {
     }
     let myData = [];
     Data_processing.read(file).then((data)=>{
+      for (let instance in data) {
+        for (let variable in data[instance]) {
 
+        }
+      }
     });
   }
 }
