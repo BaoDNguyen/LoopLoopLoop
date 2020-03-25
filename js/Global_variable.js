@@ -8,7 +8,6 @@ experiment = {
   area: 0.01,
   alpha: 10,
   loop: [],
-  highLoop: [],
   score: [],
   bin: [],
   row: 10,
@@ -17,5 +16,4 @@ experiment = {
   timeInfo: [],
   instanceInfo: [],
   variableInfo: [],
-  realData: {},
 };

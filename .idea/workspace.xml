@@ -3,6 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="07817646-99ab-403c-b2ae-ae3d1aafe6aa" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/realData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/realData.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/Global_variable.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/Global_variable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/Visual_feature_2D.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/Visual_feature_2D.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/data_processing.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/data_processing.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/main.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,6 +33,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -87,6 +94,7 @@
       <workItem from="1584973480841" duration="2659000" />
       <workItem from="1584991416467" duration="103000" />
       <workItem from="1584997291457" duration="1087000" />
+      <workItem from="1585079047608" duration="14135000" />
     </task>
     <servers />
   </component>

@@ -3,7 +3,6 @@ class Visual_feature_2D {
     // this.smooth = smooth;
     this.data = data;
     experiment.loop = [];
-    experiment.highLoop = [];
   }
 
   // compute loop
