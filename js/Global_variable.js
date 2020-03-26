@@ -3,4 +3,5 @@ experiment = {
   minNumPoint: 10,
   minConvexScore: 0.7,
   chosenData: [],
+  plotSize: 100,
 };

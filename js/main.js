@@ -245,6 +245,10 @@ function main() {
         });
       });
     }
+    let canvasRow = Math.ceil(Math.sqrt(experiment.chosenData.length));
+    let drawClass = new Draw_canvas('canvasParent','myCanvas',canvasRow*experiment.plotSize,canvasRow*experiment.plotSize);
+    experiment.chosenData.forEach((element,index)=>{
 
+    });
   });
 }
