@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="07817646-99ab-403c-b2ae-ae3d1aafe6aa" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/js/Global_variable.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/Global_variable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/main.js" afterDir="false" />
-    </list>
+    <list default="true" id="07817646-99ab-403c-b2ae-ae3d1aafe6aa" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +88,7 @@
       <workItem from="1584997291457" duration="1087000" />
       <workItem from="1585079047608" duration="14703000" />
       <workItem from="1585150292723" duration="16170000" />
-      <workItem from="1585183589721" duration="1638000" />
+      <workItem from="1585183589721" duration="1680000" />
     </task>
     <servers />
   </component>
