@@ -239,6 +239,11 @@ function main() {
           }
         }
       });
+      experiment.loopScore[f].forEach((element,index)=>{
+        element.forEach((element_,index_)=>{
+          if (element_ > 0) experiment.chosenData.push([f,index,index_]);
+        });
+      });
     }
   });
 }
