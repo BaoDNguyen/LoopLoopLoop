@@ -41,7 +41,7 @@ class Geometry {
     let v41y = y1_ - y4_;
     let checkV1 = (v1x * v23y - v1y * v23x) * (v1x * v24y - v1y * v24x);
     let checkV2 = (v2x * v41y - v2y * v41x) * (v2y * v24x - v2x * v24y);
-    return (checkV1 <= 0) && (checkV2 <= 0);
+    return (checkV1 < 0) && (checkV2 < 0);
   }
 
   // compute area of a closed shape
