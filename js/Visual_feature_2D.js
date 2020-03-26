@@ -1,86 +1,44 @@
 class Visual_feature_2D {
-  constructor (data) {
-    // this.smooth = smooth;
-    this.data = data;
-    experiment.loop = [];
+  constructor () {
+
   }
 
   // compute loop
-  Loop () {
-    for (let i = 0; i < this.data.length; i++) {
-      experiment.loop[i] = [];
-                let loopLength = [];
-                let loopNum = 0;
-                let n_timePoint = this.data[i].length;
-                for (let t = 0; t < n_timePoint - 3; t++) {
-                  let x1 = this.data[i][t][0], y1 = this.data[i][t][1];
-                  let x2 = this.data[i][t+1][0], y2 = this.data[i][t+1][1];
-                  if (x1 !== Infinity && y1 !== Infinity && x2 !== Infinity && y2 !== Infinity) {
-                    for (let tt = t+2; tt < n_timePoint - 1; tt++) {
-                      let x3 = this.data[i][tt][0], y3 = this.data[i][tt][1];
-                      let x4 = this.data[i][tt+1][0], y4 = this.data[i][tt+1][1];
-                      if (x3 !== Infinity && y3 !== Infinity && x4 !== Infinity && y4 !== Infinity) {
-                        if ( Visual_feature_2D.checkIntersection(x1,y1,x2,y2,x3,y3,x4,y4)) {
-                          if (tt-t>=experiment.offset) {
-                            let sites = [];
-                            for (let j = t; j <= tt; j++) {
-                              sites[j-t] = [this.data[i][j][0],this.data[i][j][1]];
-                            }
-                            let inLoop = Visual_feature_2D.checkSmallLoop(sites);
-                            let my_area = Visual_feature_2D.area(sites);
-                            if (inLoop===sites.length && my_area >= experiment.area) {
-                              let convex_score = Visual_feature_2D.convex_score(sites);
-                              let concave_area = hulls.concaveHullArea(hulls.concaveHull(experiment.alpha,sites));
-                              let convex_area = hulls.convexHullArea(hulls.convexHull(sites));
-                              let ratio = Visual_feature_2D.circularRatio(sites);
-                              if (convex_score*ratio[0] > 0.001) {
-                                loopLength[loopNum] = [t,tt,convex_score*ratio[0],convex_score,ratio[0],my_area,ratio[1],concave_area,convex_area];
-                                loopNum += 1;
-                              }
-                            }
-                            t = t+inLoop;
-                            break;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-                experiment.loop[i].push([i,loopLength]);
-
-
-
-
-
+  static Loop (coordinates) {
+    let loopScore = [];
+    let nTimePoint = coordinates.length;
+    for (let t = 0; t < nTimePoint-3; t++) {
+      let x1 = coordinates[t][0], y1 = coordinates[t][1];
+      let x2 = coordinates[t+1][0], y2 = coordinates[t+1][1];
+      if (x1+x2+y1+y2 !== Infinity) {
+        for (let tt = t+2; tt < nTimePoint-1; tt++) {
+          let x3 = coordinates[tt][0], y3 = coordinates[tt][1];
+          let x4 = coordinates[tt+1][0], y4 = coordinates[tt+1][1];
+          if (x3+x4+y3+y4 !== Infinity) {
+            if ( Geometry.LineSegmentIntersection(x1,y1,x2,y2,x3,y3,x4,y4)) {
+              let sites = coordinates.filter((element,index)=>index>=t&&index<=tt);
+              let inLoop = Visual_feature_2D.checkSmallLoop(sites);
+              let circularRatio = Visual_feature_2D.circularRatio(sites);
+              let convexScore = Visual_feature_2D.convexScore(sites);
+              if (inLoop === sites.length && sites.length >= experiment.minNumPoint && convexScore >= experiment.minConvexScore) {
+                loopScore.push(convexScore*circularRatio);
+              }
+              t = t+inLoop;
+              break;
+            }
+          }
+        }
+      }
     }
+    let score = (loopScore.length > 0) ? Math.max(...loopScore)*2*loopScore.length : 0;
+    if (score>1) score = 1;
+    return score;
   }
 
-  static checkIntersection(x1_, y1_, x2_, y2_, x3_, y3_, x4_, y4_) {
-    let v1x = x2_ - x1_;
-    let v1y = y2_ - y1_;
-    let v2x = x4_ - x3_;
-    let v2y = y4_ - y3_;
-    let v23x = x3_ - x2_;
-    let v23y = y3_ - y2_;
-    let v24x = x4_ - x2_;
-    let v24y = y4_ - y2_;
-    let v41x = x1_ - x4_;
-    let v41y = y1_ - y4_;
-    let checkV1 = (v1x * v23y - v1y * v23x) * (v1x * v24y - v1y * v24x);
-    let checkV2 = (v2x * v41y - v2y * v41x) * (v2y * v24x - v2x * v24y);
-    return (checkV1 <= 0) && (checkV2 <= 0);
-  }
+
 
   // compute convex score
-  static convex_score (sites) {
-    // let convex = hulls.convexHull(sites);
-    // let convexArea = hulls.convexHullArea(convex);
-    // let threshold = Data_processing.upperBoxPlot2D(sites);
-    // let alpha = 1/threshold;
-    // let concave = hulls.concaveHull(alpha,sites);
-    // let concaveArea = hulls.concaveHullArea(concave);
-    // return concaveArea/convexArea;
-
+  static convexScore (sites) {
     // count number of angle less than pi/2
     let loopSize = sites.length;
     let convex_score = 0;
@@ -90,16 +48,6 @@ class Visual_feature_2D {
       }
     }
     return convex_score/loopSize;
-
-    // check ratio of convex hulls and loop size
-    // let loopSize = sites.length;
-    // let convex = hulls.convexHull(sites);
-    // return convex.length/loopSize;
-
-    // ratio of my area/convex area
-    // let my_area = Visual_feature_2D.area(sites);
-    // let convex_area = hulls.convexHullArea(hulls.convexHull(sites));
-    // return my_area/convex_area;
   }
 
   static computeCosine(x1_, y1_, x2_, y2_, x3_, y3_) {
@@ -118,79 +66,6 @@ class Visual_feature_2D {
     return cosine;
   }
 
-  // check whether a point is inside a triangle or not
-  static checkInsideTriangle(xPoint, yPoint, x1_, y1_, x2_, y2_, x3_, y3_) {
-    let x0 = xPoint;
-    let y0 = yPoint;
-    let x1 = x1_;
-    let y1 = y1_;
-    let x2 = x2_;
-    let y2 = y2_;
-    let x3 = x3_;
-    let y3 = y3_;
-    let checkLine = ((x2-x1)/(x3-x1) === (y2-y1)/(y3-y1));
-    if (!checkLine) {
-      let xOA = x1 - x0;
-      let yOA = y1 - y0;
-      let xOB = x2 - x0;
-      let yOB = y2 - y0;
-      let xOC = x3 - x0;
-      let yOC = y3 - y0;
-      let xAB = x2 - x1;
-      let yAB = y2 - y1;
-      let xBC = x3 - x2;
-      let yBC = y3 - y2;
-      let xCA = x1 - x3;
-      let yCA = y1 - y3;
-      let check1 = xOA * yAB - yOA * xAB;
-      let check2 = xOB * yBC - yOB * xBC;
-      let check3 = xOC * yCA - yOC * xCA;
-      return (check1 > 0 && check2 > 0 && check3 > 0) || (check1 < 0 && check2 < 0 && check3 < 0);
-    } else return false;
-  }
-
-  // compute area
-  static area (sites) {
-    let n_bin = 40;
-    let binSize = 1/n_bin;
-    let cellArray = [];
-    for (let i = 0; i < n_bin; i++) {
-      cellArray[i] = [];
-      for (let j = 0; j < n_bin; j++) {
-        cellArray[i][j] = 0;
-      }
-    }
-    // compute from center
-    let xCenter = d3.mean(sites.map(element=>element[0]));
-    let yCenter = d3.mean(sites.map(element=>element[1]));
-    for (let t = 0; t < sites.length-1; t++) {
-      let xMin = Math.floor(Math.min(...[xCenter,sites[t][0],sites[t+1][0]])/binSize);
-      let xMax = Math.ceil(Math.max(...[xCenter,sites[t][0],sites[t+1][0]])/binSize);
-      let yMin = Math.floor(Math.min(...[yCenter,sites[t][1],sites[t+1][1]])/binSize);
-      let yMax = Math.ceil(Math.max(...[yCenter,sites[t][1],sites[t+1][1]])/binSize);
-      for (let i = xMin; i <= xMax; i++) {
-        for (let j = yMin; j <= yMax; j++) {
-          let xCell = i*binSize+binSize/2;
-          let yCell = j*binSize+binSize/2;
-          if (Visual_feature_2D.checkInsideTriangle(xCell,yCell,xCenter,yCenter,sites[t][0],sites[t][1],sites[t+1][0],sites[t+1][1])) {
-            cellArray[i][j] += 1;
-          }
-        }
-      }
-    }
-    let countBin = 0;
-    let x_min = Math.floor(Math.min(...sites.map(element=>element[0]))/binSize);
-    let x_max = Math.ceil(Math.max(...sites.map(element=>element[0]))/binSize);
-    let y_min = Math.floor(Math.min(...sites.map(element=>element[1]))/binSize);
-    let y_max = Math.ceil(Math.max(...sites.map(element=>element[1]))/binSize);
-    for (let i = x_min; i < x_max; i++) {
-      for (let j = y_min; j < y_max; j++) {
-        if (cellArray[i][j]%2===1) countBin += 1;
-      }
-    }
-    return countBin*binSize*binSize;
-  }
-
   // compute ratio of area and the cover squared
   static circularRatio (sites) {
     let xMax = Math.max(...sites.map(element=>element[0]));
@@ -200,8 +75,8 @@ class Visual_feature_2D {
     let yMin = Math.min(...sites.map(element=>element[1]));
     let yRange = yMax - yMin;
     let edge_square = (xRange > yRange) ? xRange : yRange;
-    let area = Visual_feature_2D.area(sites);
-    return [(4/Math.PI)*area/Math.pow(edge_square,2),Math.pow(edge_square,2)];
+    let area = Geometry.Area(sites);
+    return (4/Math.PI)*area/Math.pow(edge_square,2);
   }
 
   // check small loop inside the big loop
@@ -211,9 +86,8 @@ class Visual_feature_2D {
     let count = 0;
     for (let t = 0; t < n_timePoint - 3; t++) {
       for (let tt = t+2; tt < n_timePoint-1; tt++) {
-        if (Visual_feature_2D.checkIntersection(sites[t][0],sites[t][1],sites[t+1][0],sites[t+1][1],sites[tt][0],sites[tt][1],sites[tt+1][0],sites[tt+1][1])) {
+        if (Geometry.LineSegmentIntersection(sites[t][0],sites[t][1],sites[t+1][0],sites[t+1][1],sites[tt][0],sites[tt][1],sites[tt+1][0],sites[tt+1][1])) {
           count += 1;
-          // if (count >=2) result = t;
           if (count >= 1) result = t;
         }
         if (result !== n_timePoint) break;

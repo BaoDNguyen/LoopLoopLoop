@@ -1,19 +1,6 @@
 experiment = {
-  lowerRadius: 0.1,
-  upperRadius: 0.4,
-  data: [],
-  plotSize: [50,50],
-  blankSize: [10,10],
-  offset: 0,
-  area: 0.01,
-  alpha: 10,
-  loop: [],
-  score: [],
-  bin: [],
-  row: 10,
-  col: 10,
-  nBin: 40,
-  timeInfo: [],
-  instanceInfo: [],
-  variableInfo: [],
+  loopScore: [],
+  minNumPoint: 10,
+  minConvexScore: 0.7,
+
 };

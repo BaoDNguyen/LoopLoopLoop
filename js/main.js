@@ -200,29 +200,45 @@
 main();
 
 function main() {
-  for (let f = 0; f < 4; f++) {
-    let file = '';
-    switch (f) {
-      case 0:
-        file = 'data/us_employment_reduced.txt';
-        break;
-      case 1:
-        file = 'data/life_expectancy_reduced.txt';
-        break;
-      case 2:
-        file = 'data/house_financial_reduced.txt';
-        break;
-      case 3:
-        file = 'data/birth_death_rate_reduced.txt';
-        break;
-    }
-    let myData = [];
-    Data_processing.read(file).then((data)=>{
+  Promise.all([
+    d3.csv('data/us_employment_reduced.txt'),
+    d3.csv('data/life_expectancy_reduced.txt'),
+    d3.csv('data/house_financial_reduced.txt'),
+    d3.csv('data/birth_death_rate_reduced.txt'),
+  ]).then(function (files) {
+    for (let f = 0; f < files.length; f++) {
+      experiment.loopScore[f] = [];
+      let myArray = [];
+      let myData = [];
+      let mapInstance = new Map();
+      let mapVariable = new Map();
+      let data = {};
+      data = Data_processing.read(files[f]);
+      Data_processing.normalization(data);
+      let instanceIndex = -1;
       for (let instance in data) {
+        instanceIndex += 1;
+        mapInstance.set(instanceIndex,instance);
+        myArray[instanceIndex] = [];
+        let variableIndex = -1;
         for (let variable in data[instance]) {
-
+          variableIndex += 1;
+          mapVariable.set(variableIndex,variable);
+          myArray[instanceIndex][variableIndex] = data[instance][variable].map(element=>element);
         }
       }
-    });
-  }
+      myArray.forEach((element,index)=>{
+        myData[index] = [];
+        experiment.loopScore[f][index] = [];
+        let nVar = element.length;
+        for (let i = 0; i < nVar - 1; i++) {
+          for (let j = i + 1; j < nVar; j++) {
+            let coordinates = element[i].map((element_,index_)=>[element_,element[j][index_]]);
+            myData[index].push(coordinates);
+            experiment.loopScore[f][index].push(Visual_feature_2D.Loop(coordinates));
+          }
+        }
+      });
+    }
+  });
 }
