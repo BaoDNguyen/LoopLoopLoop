@@ -23,8 +23,8 @@ class Draw_canvas {
     this.ctx.strokeRect(position[0],position[1],size[0],size[1]);
     this.ctx.stroke();
     // draw text
-    this.ctx.font = '12px Arial';
-    this.ctx.fillText('Circular score = '+Math.floor(experiment.loop[id][0][1][0][2]*100)/100,position[0],position[1]);
+    this.ctx.font = '10px Arial';
+    this.ctx.fillText('Circular score = '+Math.floor(experiment.loopScore[id[0]][id[1]][id[2]]*100)/100,position[0],position[1]);
     // draw data points and lines
     let nTimeStep = data.length;
     for (let step = 0; step < nTimeStep; step++) {
@@ -32,7 +32,7 @@ class Draw_canvas {
       let y = position[1] + data[step][1]*size[1];
       this.ctx.beginPath();
       this.ctx.fillStyle = 'rgb(0,0,0)';
-      this.ctx.arc(x,y,2,0,2*Math.PI);
+      this.ctx.arc(x,y,1,0,2*Math.PI);
       this.ctx.fill();
       if (step) {
         let x0 = position[0] + data[step-1][0]*size[0];
