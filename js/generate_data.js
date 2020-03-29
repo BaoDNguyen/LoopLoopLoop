@@ -4,7 +4,7 @@ class Generate_data {
   }
 
   // Generate array of random points
-  randomListNumber(lowerLimit,upperLimit,numberOfNumber) {
+  static randomListNumber(lowerLimit,upperLimit,numberOfNumber) {
     let result = [];
     for (let i = 0; i < numberOfNumber; i++) {
       let randomNumber = Math.random();
@@ -17,7 +17,7 @@ class Generate_data {
   // center: coordinate of center [x0,y0]
   // return: array of coordinates of points on the circle
   // result = [{x:value,y:value}]
-  uniformCircle(center,radius,numberOfPoint) {
+  static uniformCircle(center,radius,numberOfPoint) {
     let result = [];
     for (let i = 0; i < numberOfPoint; i++) {
       let angle = i*Math.PI*2/numberOfPoint;
@@ -34,7 +34,7 @@ class Generate_data {
   // t: variable
   // A0, A1, t0, t1: constants
   // tRange: [beginning value, ending value]
-  HarmonicFunction(A0,A1,t0,t1,tRange,numberOfPoint) {
+  static HarmonicFunction(A0,A1,t0,t1,tRange,numberOfPoint) {
     let result = [];
     let size = (tRange[1]-tRange[0])/(numberOfPoint-1);
     for (let i = 0; i < numberOfPoint; i++) {
@@ -49,7 +49,7 @@ class Generate_data {
   // generate ellipse
   // equation in polar coordinates:
   // r = ab/sqrt(a*a*sin(theta-theta0)*sin(theta-theta0)+b*b*cos(theta-theta0)*cos(theta-theta0))
-  uniformEllipse(a,b,theta0,numberOfPoint) {
+  static uniformEllipse(a,b,theta0,numberOfPoint) {
     let result = [];
     let size = Math.PI*2/(numberOfPoint-1);
     for (let i = 0; i < numberOfPoint; i++) {

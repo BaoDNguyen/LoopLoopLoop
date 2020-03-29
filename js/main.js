@@ -220,16 +220,40 @@ function main() {
       }
     }
     // generate data
-    let dataClass = new Generate_data();
-    let listRadius = dataClass.randomListNumber(experiment.lowerRadius, experiment.upperRadius, experiment.row * experiment.col);
-    let listCenter = [];
     for (let i = 0; i < experiment.row * experiment.col; i++) {
       experiment.myData[i] = [];
-      let xCenter = dataClass.randomListNumber(listRadius[i], 1 - listRadius[i], 1);
-      let yCenter = dataClass.randomListNumber(listRadius[i], 1 - listRadius[i], 1);
-      listCenter[i] = [xCenter[0], yCenter[0]];
-      experiment.myData[i] = dataClass.uniformCircle(listCenter[i], listRadius[i], 99);
-      experiment.myData[i].push(experiment.myData[i][0]);
+      if (i < experiment.row*experiment.col*0.1) {
+        let listRadius = Generate_data.randomListNumber(experiment.lowerRadius, experiment.upperRadius, 1);
+        let xCenter = Generate_data.randomListNumber(listRadius[0], 1 - listRadius[0], 1);
+        let yCenter = Generate_data.randomListNumber(listRadius[0], 1 - listRadius[0], 1);
+        let listCenter = [xCenter[0], yCenter[0]];
+        experiment.myData[i] = Generate_data.uniformCircle(listCenter, listRadius[0], 99);
+        experiment.myData[i].push(experiment.myData[i][0]);
+      } else if (i < experiment.row*experiment.col*0.3) {
+        let a = Math.random()*0.5;
+        let b = Math.random()*0.5;
+        let theta0 = Math.random()*Math.PI*2;
+        let array = Generate_data.uniformEllipse(a,b,theta0,99);
+        let objectX = {instance:{variable:array.map(element=>element[0])}};
+        let objectY = {instance:{variable:array.map(element=>element[1])}};
+        let normObjectX = Data_processing.normalization(objectX);
+        let normObjectY = Data_processing.normalization(objectY);
+        experiment.myData[i] = normObjectX.instance.variable.map((element,index)=>[element,normObjectY.instance.variable[index]]);
+        experiment.myData[i].push(experiment.myData[i][0]);
+      } else {
+        let A0 = Math.random()*10;
+        let A1 = Math.random()*10;
+        let t0 = Math.random()*Math.PI*2;
+        let t1 = Math.random()*Math.PI*2;
+        let cycle = Math.floor(Math.random()*3)+1;
+        let array = Generate_data.HarmonicFunction(A0,A1,t0,t1,[0,cycle*Math.PI*2],100);
+        let objectX = {instance:{variable:array.map(element=>element[0])}};
+        let objectY = {instance:{variable:array.map(element=>element[1])}};
+        let normObjectX = Data_processing.normalization(objectX);
+        let normObjectY = Data_processing.normalization(objectY);
+        experiment.myData[i] = normObjectX.instance.variable.map((element,index)=>[element,normObjectY.instance.variable[index]]);
+      }
+
     }
     // get loop score for generated data
     experiment.loopScore[experiment.loopScore.length] = [];

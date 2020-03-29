@@ -30,7 +30,7 @@ class Visual_feature_2D {
         }
       }
     }
-    let score = (loopScore.length > 0) ? Math.max(...loopScore)*2*loopScore.length : 0;
+    let score = (loopScore.length > 0) ? Math.max(...loopScore)*loopScore.length : 0;
     if (score>1) score = 1;
     return score;
   }
